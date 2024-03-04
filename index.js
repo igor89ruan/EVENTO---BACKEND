@@ -1,7 +1,7 @@
-import cliente from './modelos/cliente.js';
+import evento from './modelos/evento.js';
 
 //todas as linhas desse progrma são executadas de forma assincroma
-const Cliente = new cliente(2,
+const Cliente = new evento(2,
     "123.456.789-10",
     "atualizou",
     "Rua primavera, 12",
@@ -36,7 +36,7 @@ const Cliente = new cliente(2,
     console.log(erro.message);
 });*/
 
-const clienteQQ = new cliente();
+const clienteQQ = new evento();
 
 
 clienteQQ.consultar('Ana Maria').then((listaClientes)=>{

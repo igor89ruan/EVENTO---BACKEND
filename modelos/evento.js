@@ -2,7 +2,7 @@
 // Em orientecao a objetos um classe possui metodos e atributos
 // atributos sao caracteristicas de um objeto
 // metodos sao as acoes que um objeto pode executar
-import clienteDAO from "../persistencia/clienteDAO.js";
+import eventoDAO from "../persistencia/eventoDAO.js";
 export default class cliente {
     // atributos privados
     // somente por meio de metodos publicos e que podemos alterar os atributos
@@ -103,22 +103,22 @@ export default class cliente {
     // como armazenar os clinetes no banco de dados ?
 
     async gravar(){
-        const dao = new clienteDAO();
+        const dao = new eventoDAO();
         await dao.gravar(this); // this pode ser compreendido com a seguinte expresão: grave a min mesmo
     }
 
     async atualizar(){
-        const dao = new clienteDAO();
+        const dao = new eventoDAO();
         await dao.atualizar(this);
     }
 
     async excluir(){
-        const dao = new clienteDAO();
+        const dao = new eventoDAO();
         await dao.excluir(this);
     }
 
     async consultar(termoDePesquisa){
-        const dao = new clienteDAO();
+        const dao = new eventoDAO();
         return await dao.consultar(termoDePesquisa); 
     }
 

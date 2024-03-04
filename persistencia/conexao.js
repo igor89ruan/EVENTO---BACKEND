@@ -27,4 +27,4 @@ export default async function conectar() {
         global.pool = pool;
         return await pool.getConnection();
     }
-}
+}   

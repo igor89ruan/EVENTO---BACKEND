@@ -2,10 +2,10 @@
 //Interface para abstrair o acesso aos
 //dados do banco de dados.
 import conectar from "./conexao.js";
-import Cliente from "../modelos/cliente.js"
+import evento from "../modelos/evento.js"
 export default class clienteDao {
     async gravar(cliente){
-        if (cliente instanceof Cliente){
+        if (cliente instanceof evento){
             const conexao = await conectar();
             const sql = 'INSERT INTO cliente (cpf, nome, endereco, bairro, cidade, estado, telefone, email) values(?, ?, ?, ?, ?, ?, ?, ?)';
             const parametros = [
@@ -25,7 +25,7 @@ export default class clienteDao {
     }
 
     async atualizar(cliente){
-        if (cliente instanceof Cliente) {
+        if (cliente instanceof evento) {
             const conexao = await conectar();
             const sql = `UPDATE cliente SET  
                         nome=?, endereco=?, bairro=?, 
@@ -46,7 +46,7 @@ export default class clienteDao {
     }
 
     async excluir(cliente){
-        if (cliente instanceof Cliente) {
+        if (cliente instanceof evento) {
             const conexao = await conectar();
             const sql = 'DELETE FROM cliente WHERE id=?';
             const  parametros = [
@@ -74,7 +74,7 @@ export default class clienteDao {
 
         let listaClientes = [];
         for (const registro of registros){
-            const cliente = new Cliente(
+            const cliente = new evento(
                 registro.id,
                 registro.cpf,
                 registro.nome,
