@@ -1,39 +1,42 @@
-import evento from './modelos/evento.js';
+//Todas as linhas desse programa são executadas de forma síncrona
+//ou seja, de forma sequencial
 
-//todas as linhas desse progrma são executadas de forma assincroma
-const Cliente = new evento(2,
-    "123.456.789-10",
-    "atualizou",
-    "Rua primavera, 12",
-    "Parque Cerejeiras",
-    "Presidente Prudente",
-    "SP",
-    "(11) 99995-6789",
-    "rogerio@email.com"
-    );
+import Evento from "./modelos/evento.js";
 
-//console.log(Cliente.toJSON());
 
-//nos metodos assincronos é preciso manipular as promessas (promises)
-//então, em algum momento o metodo trata uma resposta e nosso programa
-// não sabera quando isso ira acontecer
+const evento = new Evento(3, "Falling in Reverse", "'Rua Ibiuna, 98'", "Sorocaba",
+    "SP", "R$ 0.000,00", "ESGOTADO");
+    
+//Nos métodos assíncronos é preciso manipular as promises  (Promessas)
+//Então, em algum momento o método trará uma resposta e o nosso programa
+//Não saberá quando isso irá acontecer.
 
-/*Cliente.gravar().then(() =>{
-    console.log("Gravado com sucesso");
-}).catch(function (erro) {
-    console.log(erro.message); //exibe a mensagem do erro
+
+//GRAVAR NOVO EVENTO!
+
+/*evento.gravar().then(() => {
+    console.log("Evento gravado com sucesso no banco de dados!");
+})
+.catch((erro) => {
+    console.error("Erro ao gravar evento:", erro.message);
 });*/
 
-/*Cliente.atualizar().then(() => {
-    console.log("Atualizado com sucesso");
-}).catch(function (erro) {
-    console.log(erro.message);
-});*/
+//ATUALIZAR EVENTO JÁ EXISTENTE
 
-/*Cliente.excluir().then(() => {
-    console.log("Excluido com sucesso");
-}).catch(function (erro) {
-    console.log(erro.message);
+evento.atualizar()
+.then(() => {
+    console.log("Evento atualizado com sucesso!");
+}).catch((erro) => {
+    console.log("Erro ao atualizar evento:", erro.message);
+});
+
+//EXCLUIR EVENTO
+
+/*evento.excluir()
+.then(() => {
+    console.log("Evento excluído com sucesso!");
+}).catch((erro) => {
+    console.log("Erro ao excluir evento:", erro.message);
 });*/
 
 const clienteQQ = new evento();

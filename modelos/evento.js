@@ -1,143 +1,106 @@
-// classe a abstracao do mundo real
-// Em orientecao a objetos um classe possui metodos e atributos
-// atributos sao caracteristicas de um objeto
-// metodos sao as acoes que um objeto pode executar
-import eventoDAO from "../persistencia/eventoDAO.js";
-export default class cliente {
-    // atributos privados
-    // somente por meio de metodos publicos e que podemos alterar os atributos
-    // em javascript definidos  privados usando
+//Classe é a abstração de uma entidade do mundo real
+//Em orientação a objetos uma classe possui métodos e atributos
+//Atributos são caracteristicas de um Objeto
+//Métodos são as ações que um objeto pode executar
+import EventoDAO from "../persistencia/eventoDAO.js";
 
+export default class Evento {
+    //atributos são privados
+    //somente por meio de métodos públicos é que podemos acessar os atributos de uma classe
+    //em javascript definimos atributos privados usando #
     #codigo;
-    #cpf;
-    #nome;
+    #artista;
     #endereco;
-    #bairro;
     #cidade;
     #estado;
-    #telefone;
-    #email;
+    #preco;
+    #ingressos;
 
-    constructor(codigo = 0, cpf='', nome='', endereco='', bairro='', cidade='',  estado='', telefone='', email=''){
+    constructor(codigo=0, artista="", endereco="", cidade="", estado="", preco="", ingressos="") {
         this.#codigo = codigo;
-        this.#cpf = cpf;
-        this.#nome = nome;
-        this.#endereco = endereco;
-        this.#bairro = bairro;
-        this.#cidade = cidade;
-        this.#estado = estado;
-        this.#telefone = telefone;
-        this.#email =  email;
-    }
-
-    //definir os metodos de acesso aos atributos de um cliente
-    get codigo() {
-        return this.#codigo;
-    }
-
-    set codigo(novoCodigo) {
-        this.#codigo = novoCodigo;
+        this.#artista = artista;
+        this.#endereco= endereco;
+        this.#cidade= cidade;
+        this.#estado= estado;
+        this.#preco = preco;
+        this.#ingressos = ingressos;
     }
     
-    get cpf(){
-        return this.#cpf;
+    //definir os métodos de acesso aos atributos de um evento
+    get codigo(){
+        return this.#codigo;
     }
-    set cpf(novoCPF){
-        this.#cpf=novoCPF;
+    set codigo(novoCodigo){
+        this.#codigo = novoCodigo;
     }
-    get nome(){
-        return this.#nome;
+    get artista(){
+        return this.#artista;
     }
-    set nome(novoNome){
-        this.#nome = novoNome;
+    set artista(novoArtista){
+        this.#artista = novoArtista;
     }
-
-    get endereco() {
+    get endereco(){
         return this.#endereco;
     }
-
-    set endereco(novoEndereco) {
+    set endereco(novoEndereco){
         this.#endereco = novoEndereco;
     }
-
-    get bairro() {
-        return this.#bairro;
-    }
-
-    set bairro(novoBairro) {
-        this.#bairro = novoBairro;
-    }
-
-    get cidade() {
+    get cidade(){
         return this.#cidade;
     }
-
-    set cidade(novaCidade) {
+    set cidade(novaCidade){
         this.#cidade = novaCidade;
     }
-
-    get estado() {
+    get estado(){
         return this.#estado;
     }
-
-    set estado(novoEstado) {
+    set estado(novoEstado){
         this.#estado = novoEstado;
     }
-
-    get telefone() {
-        return this.#telefone;
+    get preco(){
+        return this.#preco;
+    }
+    set preco(novoPreco){
+        this.#preco = novoPreco;
+    }
+    get ingressos(){
+        return this.#ingressos;
+    }
+    set ingressos(novoIngressos){
+        this.#ingressos = novoIngressos;
     }
 
-    set telefone(novoTelefone) {
-        this.#telefone = novoTelefone;
+//Como armazenar os eventos no Banco de Dados
+
+async gravar(){
+    const dao = new EventoDAO();
+    await dao.gravar(this); //this pode ser compreendido como a seguinte expressão: grave a mim mesmo
+}
+async atualizar(){
+    const dao = new EventoDAO();
+    await dao.atualizar(this); 
+}
+async excluir(){
+    const dao = new EventoDAO();
+    await dao.excluir(this);
+}
+async consultar(termoDePesquisa){
+    const dao = new EventoDAO();
+    return await dao.consultar(termoDePesquisa);
+}
+    //Override do método toString da classe pai Object
+    toString(){
+        return `Evento código: ${this.#codigo} - artista: ${this.#artista}`
     }
-
-    get email() {
-        return this.#email;
-    }
-
-    set email(novoEmail) {
-        this.#email = novoEmail;
-    }1
-
-    // como armazenar os clinetes no banco de dados ?
-
-    async gravar(){
-        const dao = new eventoDAO();
-        await dao.gravar(this); // this pode ser compreendido com a seguinte expresão: grave a min mesmo
-    }
-
-    async atualizar(){
-        const dao = new eventoDAO();
-        await dao.atualizar(this);
-    }
-
-    async excluir(){
-        const dao = new eventoDAO();
-        await dao.excluir(this);
-    }
-
-    async consultar(termoDePesquisa){
-        const dao = new eventoDAO();
-        return await dao.consultar(termoDePesquisa); 
-    }
-
-    //override do metodo toString da classe pai obejto
-    toString() {
-        return `Cliente = Codigo: ${this.#codigo}, Nome: ${this.#nome}`
-    }
-
-    toJSON() {
+    toJson(){
         return {
-            'codigo': this.#codigo,
-            'cpf' : this.#cpf,
-            'nome' : this.#nome,
-            'endereco' : this.#endereco,
-            'bairro' : this.#bairro,
-            'cidade' : this.#cidade,
-            'estado' : this.#estado,
-            'telefone' : this.#telefone,
-            'email' : this.#email
+            "codigo": this.#codigo,
+            "artista": this.#artista,
+            "endereco": this.#endereco,
+            "cidade": this.#cidade,
+            "estado": this.#estado,
+            "preco": this.#preco,
+            "ingressos": this.#ingressos,
         }
     }
 }

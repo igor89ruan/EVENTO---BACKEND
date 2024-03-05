@@ -1,92 +1,84 @@
-//DAO - Data acess Object
-//Interface para abstrair o acesso aos
-//dados do banco de dados.
-import conectar from "./conexao.js";
-import evento from "../modelos/evento.js"
-export default class clienteDao {
-    async gravar(cliente){
-        if (cliente instanceof evento){
+import conectar from "./conexao.js"; //Não esquecer do .js no final
+import Evento from "../modelos/evento.js";
+//DAO Data Access Object
+export default class EventoDAO{
+    async gravar(evento){
+        if (evento instanceof Evento){
             const conexao = await conectar();
-            const sql = 'INSERT INTO cliente (cpf, nome, endereco, bairro, cidade, estado, telefone, email) values(?, ?, ?, ?, ?, ?, ?, ?)';
-            const parametros = [
-                cliente.cpf,
-                cliente.nome,
-                cliente.endereco,
-                cliente.bairro,
-                cliente.cidade,
-                cliente.estado,
-                cliente.telefone,
-                cliente.email
-            ];
-            const [resultados, campos] = await conexao.execute(sql,parametros);
-            // funcionalidade interessante oferecida pela biblioteca mysql2
-            cliente.codigo = resultados.insertId; //recupera o id gerado pelo banco de dados
+            const sql = `INSERT INTO evento (artista, endereco, cidade, 
+            estado, preco, ingressos) 
+            values (?, ?, ?, ?, ?, ?)`;
+        const parametros =[
+            evento.artista,
+            evento.endereco,
+            evento.cidade,
+            evento.estado,
+            evento.preco,
+            evento.ingressos
+        ];
+            const [resultados, campos] = await conexao.execute(sql, parametros); // Adicionado "=" aqui
+            evento.codigo = resultados.insertId; // Recupero o ID gerado pelo DB
         }
     }
-
-    async atualizar(cliente){
-        if (cliente instanceof evento) {
+    async atualizar(evento){
+        if (evento instanceof Evento){
             const conexao = await conectar();
-            const sql = `UPDATE cliente SET  
-                        nome=?, endereco=?, bairro=?, 
-                        cidade=?, estado=?, telefone=?, 
-                        email=?  WHERE id=?`;
+            const sql = `UPDATE Evento SET artista = ?, endereco = ?, cidade = ?, estado = ?, preco = ?, ingressos = ? WHERE id = ?`;
+        const parametros = [
+            evento.artista,
+            evento.endereco,
+            evento.cidade,
+            evento.estado,
+            evento.preco,
+            evento.ingressos,
+            evento.codigo,
+        ];
+
+        await conexao.execute(sql, parametros);
+        }
+    }
+    async excluir(evento){
+        if (evento instanceof Evento) {
+            const conexao = await conectar ();
+            const sql = `DELETE FROM evento WHERE id = ?`;
             const parametros = [
-                cliente.nome,
-                cliente.endereco,
-                cliente.bairro,
-                cliente.cidade,
-                cliente.estado,
-                cliente.telefone,
-                cliente.email,
-                cliente.id
+                evento.codigo
             ]
             await conexao.execute(sql, parametros);
         }
+
     }
 
-    async excluir(cliente){
-        if (cliente instanceof evento) {
-            const conexao = await conectar();
-            const sql = 'DELETE FROM cliente WHERE id=?';
-            const  parametros = [
-                cliente.codigo
-            ];
-            await conexao.execute(sql, parametros);
-        }
-    }
-    // termo de pesquisa pode ser o codigo do cliente ou ainda o nome
+    //Termo de pesquisa pode ser código do artista ou nome.
+    //Se o termo for um número, pesquisar pelo código 
     async consultar(termoDePesquisa){
         if (termoDePesquisa === undefined){
             termoDePesquisa = "";
         }
-        let sql ="";
-        if (isNaN(termoDePesquisa)){  //termo de pesquisa não é um numero
+        let sql=""
+        if (isNaN(termoDePesquisa)){ //Termo de pesquisa não é número (isNaN = Is Not a Number)
             sql = `SELECT * FROM cliente WHERE nome LIKE ?`;
-            termoDePesquisa = `%${termoDePesquisa}%`;        
-        } else{
-            sql = `SELECT * FROM cliente WHERE id= ?`;
+            termoDePesquisa = `%${termoDePesquisa}%`; 
         }
-
-        const conexao = await conectar();
-        const [registros] = await conexao.execute(sql,[termoDePesquisa]);
-        //utilizar os registros encontrados para criar novos objetos do tipo cliente
-
-        let listaClientes = [];
-        for (const registro of registros){
-            const cliente = new evento(
-                registro.id,
-                registro.cpf,
-                registro.nome,
-                registro.endereco,
-                registro.bairro,
-                registro.cidade,
-                registro.estado,
-                registro.telefone,
-                registro.email
-            );
-            listaClientes.push(cliente);
+        else{
+            sql = `SELECT  * FROM evento WHERE id = ?`;
         }
-        return listaClientes;
+    const conexao = await conectar();
+    const [registros] = await conexao.execute(sql,[termoDePesquisa]);
+    //Utilizar os registros encontrados para novos objetos do tipo evento
+    let listaEventos = [];
+    for (const registro of registros){
+        const evento = new Evento(
+            registro.id,
+            registro.artista,
+            registro.endereco,
+            registro.cidade,
+            registro.estado,
+            registro.preco,
+            registro.ingressos
+        );
+        listaEventos.push(evento);
+    }
+        return listaEventos;
     }
 }
