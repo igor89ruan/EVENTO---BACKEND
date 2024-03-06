@@ -16,7 +16,7 @@ export default async function conectar() {
             user: 'root', //Não é recomendado usar o super usuário
             password: '',
             port: '3306',
-            database: 'backend',
+            database: 'EventoBackend',
             waitForConnections: true,
             connectionLimit: 10,
             maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`

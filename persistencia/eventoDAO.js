@@ -1,48 +1,53 @@
 import conectar from "./conexao.js"; //Não esquecer do .js no final
-import Evento from "../modelos/evento.js";
+import evento from "../modelos/evento.js";
 //DAO Data Access Object
 export default class EventoDAO{
-    async gravar(evento){
-        if (evento instanceof Evento){
+    async gravar(Evento){
+        if (Evento instanceof evento){
             const conexao = await conectar();
-            const sql = `INSERT INTO evento (artista, endereco, cidade, 
-            estado, preco, ingressos) 
-            values (?, ?, ?, ?, ?, ?)`;
-        const parametros =[
-            evento.artista,
-            evento.endereco,
-            evento.cidade,
-            evento.estado,
-            evento.preco,
-            evento.ingressos
-        ];
-            const [resultados, campos] = await conexao.execute(sql, parametros); // Adicionado "=" aqui
-            evento.codigo = resultados.insertId; // Recupero o ID gerado pelo DB
+            const sql = `INSERT INTO eventos (id, nome_evento, nome_artista, ingresso_disp, valor_ingresso, cidade, estado, endereco_evento, data_evento) 
+            values (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            const parametros =[
+                Evento.id,
+                Evento.nome_evento,
+                Evento.nome_artista,
+                Evento.ingresso_disp,
+                Evento.valor_ingresso,
+                Evento.cidade,
+                Evento.estado,
+                Evento.endereco_evento,
+                Evento.data_evento
+            ];
+            const [resultados, campos] = await conexao.execute(sql, parametros);
+            Evento.codigo = resultados.insertId;
         }
     }
-    async atualizar(evento){
-        if (evento instanceof Evento){
+    async atualizar(Evento){
+        if (Evento instanceof evento){
             const conexao = await conectar();
-            const sql = `UPDATE Evento SET artista = ?, endereco = ?, cidade = ?, estado = ?, preco = ?, ingressos = ? WHERE id = ?`;
-        const parametros = [
-            evento.artista,
-            evento.endereco,
-            evento.cidade,
-            evento.estado,
-            evento.preco,
-            evento.ingressos,
-            evento.codigo,
-        ];
+            const sql = `UPDATE Eventos SET nome_evento = ?, nome_artista = ?, ingresso_disp = ?, valor_ingresso = ?, cidade = ?, estado = ?, endereco_evento = ?, data_evento = ?
+            WHERE id = ?`;
+            const parametros = [
+                Evento.nome_evento,
+                Evento.nome_artista,
+                Evento.ingresso_disp,
+                Evento.valor_ingresso,
+                Evento.cidade,
+                Evento.estado,
+                Evento.endereco_evento,
+                Evento.data_evento,
+                Evento.id
+            ];
 
         await conexao.execute(sql, parametros);
         }
     }
-    async excluir(evento){
-        if (evento instanceof Evento) {
+    async excluir(Evento){
+        if (Evento instanceof evento) {
             const conexao = await conectar ();
-            const sql = `DELETE FROM evento WHERE id = ?`;
+            const sql = `DELETE FROM eventos WHERE id = ?`;
             const parametros = [
-                evento.codigo
+                Evento.id
             ]
             await conexao.execute(sql, parametros);
         }
@@ -57,27 +62,29 @@ export default class EventoDAO{
         }
         let sql=""
         if (isNaN(termoDePesquisa)){ //Termo de pesquisa não é número (isNaN = Is Not a Number)
-            sql = `SELECT * FROM cliente WHERE nome LIKE ?`;
+            sql = `SELECT * FROM eventos WHERE nome_artista LIKE ?`;
             termoDePesquisa = `%${termoDePesquisa}%`; 
         }
         else{
-            sql = `SELECT  * FROM evento WHERE id = ?`;
+            sql = `SELECT  * FROM eventos WHERE id = ?`;
         }
     const conexao = await conectar();
     const [registros] = await conexao.execute(sql,[termoDePesquisa]);
     //Utilizar os registros encontrados para novos objetos do tipo evento
     let listaEventos = [];
     for (const registro of registros){
-        const evento = new Evento(
+        const Evento = new evento(
             registro.id,
-            registro.artista,
-            registro.endereco,
+            registro.nome_evento,
+            registro.nome_artista,
+            registro.ingresso_disp,
+            registro.valor_ingresso,
             registro.cidade,
             registro.estado,
-            registro.preco,
-            registro.ingressos
+            registro.endereco_evento,
+            registro.data_evento
         );
-        listaEventos.push(evento);
+        listaEventos.push(Evento);
     }
         return listaEventos;
     }

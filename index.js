@@ -4,25 +4,35 @@
 import Evento from "./modelos/evento.js";
 
 
-const evento = new Evento(3, "Falling in Reverse", "'Rua Ibiuna, 98'", "Sorocaba",
-    "SP", "R$ 0.000,00", "ESGOTADO");
+const evento = new Evento(1,
+    "Festival Brasileiro",
+    "Pablo Vitar",
+    100,
+    100,
+    "Presidente Prudente",
+    "SP",
+    "Rua jardim Cambuci",
+    "01/02/2023"
+    );
     
 //Nos métodos assíncronos é preciso manipular as promises  (Promessas)
 //Então, em algum momento o método trará uma resposta e o nosso programa
 //Não saberá quando isso irá acontecer.
 
-
+/*
 //GRAVAR NOVO EVENTO!
 
-/*evento.gravar().then(() => {
+evento.gravar().then(() => {
     console.log("Evento gravado com sucesso no banco de dados!");
 })
 .catch((erro) => {
     console.error("Erro ao gravar evento:", erro.message);
-});*/
+});
+
+*/
 
 //ATUALIZAR EVENTO JÁ EXISTENTE
-
+/*
 evento.atualizar()
 .then(() => {
     console.log("Evento atualizado com sucesso!");
@@ -30,24 +40,30 @@ evento.atualizar()
     console.log("Erro ao atualizar evento:", erro.message);
 });
 
+*/
+
+/*
 //EXCLUIR EVENTO
 
-/*evento.excluir()
+evento.excluir()
 .then(() => {
     console.log("Evento excluído com sucesso!");
 }).catch((erro) => {
     console.log("Erro ao excluir evento:", erro.message);
 });*/
 
-const clienteQQ = new evento();
+const clienteQQ = new Evento();
 
 
-clienteQQ.consultar('Ana Maria').then((listaClientes)=>{
-    console.log("Clientes encontrados: " + listaClientes.length);
-    for (const cliente of listaClientes){
-        console.log(cliente.toJSON());
+clienteQQ.consultar('Fernando e Soracaba').then((listaEventos)=>{
+    console.log("Evento encontrado: " + listaEventos.length);
+    for (const Evento of listaEventos){
+        console.log(Evento.toJSON());
     }
 }).catch((erro) => {
-    console.log("Não foi possivel consultar o cliente: ", erro);
+    console.log("Não foi possivel consultar o evento: ", erro);
 });
 
+
+
+//console.log(evento.toJson());
