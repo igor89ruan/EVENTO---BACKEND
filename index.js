@@ -4,15 +4,15 @@
 import Evento from "./modelos/evento.js";
 
 
-const evento = new Evento(1,
+const evento = new Evento(3,
     "Festival Brasileiro",
-    "Pablo Vitar",
+    "Claúdia Leite",
     100,
-    100,
+    80,
     "Presidente Prudente",
     "SP",
-    "Rua jardim Cambuci",
-    "01/02/2023"
+    "Rua jardim cambuci, 80",
+    "01/09/2024"
     );
     
 //Nos métodos assíncronos é preciso manipular as promises  (Promessas)
@@ -31,18 +31,19 @@ evento.gravar().then(() => {
 
 */
 
-//ATUALIZAR EVENTO JÁ EXISTENTE
 /*
+//ATUALIZAR EVENTO JÁ EXISTENTE
+
 evento.atualizar()
 .then(() => {
     console.log("Evento atualizado com sucesso!");
 }).catch((erro) => {
     console.log("Erro ao atualizar evento:", erro.message);
 });
-
 */
 
 /*
+
 //EXCLUIR EVENTO
 
 evento.excluir()
@@ -50,12 +51,14 @@ evento.excluir()
     console.log("Evento excluído com sucesso!");
 }).catch((erro) => {
     console.log("Erro ao excluir evento:", erro.message);
-});*/
+});
+*/
+
 
 const clienteQQ = new Evento();
 
 
-clienteQQ.consultar('Fernando e Soracaba').then((listaEventos)=>{
+clienteQQ.consultar(3).then((listaEventos)=>{
     console.log("Evento encontrado: " + listaEventos.length);
     for (const Evento of listaEventos){
         console.log(Evento.toJSON());
