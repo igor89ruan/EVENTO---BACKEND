@@ -1,0 +1,32 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "backend da minha aplicacao de cadastro de cliente",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/igor89ruan/BACKEND.git"
+    },
+    "keywords": [
+        "backend",
+        "aula",
+        "programação",
+        "internet"
+    ],
+    "author": "igor ruan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/igor89ruan/BACKEND/issues"
+    },
+    "homepage": "https://github.com/igor89ruan/BACKEND#readme",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.3",
+        "mysql2": "^3.9.1"
+    }
+}
