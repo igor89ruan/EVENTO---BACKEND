@@ -67,7 +67,6 @@ app.use(cors({
 app.use(express.json()); //Permite ler dados enviados no formato JSON
 app.use(express.urlencoded({extended: true})); // Permite ler dados enviados pelo metodo POST em formulário, como por exemplo os campos do formulário 
 
-
 app.use('/clientes', rotaCliente);
 app.listen(porta, host, () => {
     console.log(`Servidor executando em http://${host}:${porta}`);

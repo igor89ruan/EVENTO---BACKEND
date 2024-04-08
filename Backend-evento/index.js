@@ -77,16 +77,21 @@ clienteQQ.consultar(3).then((listaEventos)=>{
 
 import express from "express";
 import rotaEvento from './rotas/rotaEvento.js';
+import cors from 'cors';
 
 const host = '0.0.0.0'; //IP genérico que representa todas as interfaces (placas de rede)
-const porta = 3000; // Sempre utilize portas com valor maior que 1024
+const porta = 5000; // Sempre utilize portas com valor maior que 1024
 
 const app = express();
+
+app.use(cors({
+    origin:'*'
+}));
 
 app.use(express.json()); //Permite ler dados enviados no formato JSON
 app.use(express.urlencoded({extended: true})); // Permite ler dados enviados pelo metodo POST em formulário, como por exemplo os campos do formulário 
 
-app.use('/evento', rotaEvento);
+app.use('/eventos', rotaEvento);
 app.listen(porta, host, () => {
     console.log(`Servidor executando em http://${host}:${porta}`);
 });

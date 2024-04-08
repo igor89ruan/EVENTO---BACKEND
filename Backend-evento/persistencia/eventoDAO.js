@@ -56,6 +56,7 @@ export default class EventoDAO{
 
     //Termo de pesquisa pode ser código do artista ou nome.
     //Se o termo for um número, pesquisar pelo código 
+    /*
     async consultar(termoDePesquisa){
         if (termoDePesquisa === undefined){
             termoDePesquisa = "";
@@ -89,3 +90,38 @@ export default class EventoDAO{
         return listaEventos;
     }
 }
+*/
+async consultar(termoDePesquisa){
+    let sql = "SELECT * FROM eventos";
+    const conexao = await conectar();
+    let parametros = [];
+
+    // Se um termo de pesquisa foi fornecido, ajusta a consulta SQL e os parâmetros
+    if (termoDePesquisa) {
+        if (isNaN(termoDePesquisa)) { // Termo de pesquisa não é número
+            sql = `SELECT * FROM eventos WHERE nome_artista LIKE ?`;
+            parametros = [`%${termoDePesquisa}%`];
+        } else { // Termo de pesquisa é um número
+            sql = `SELECT * FROM eventos WHERE id = ?`;
+            parametros = [termoDePesquisa];
+        }
+    }
+
+    const [registros] = await conexao.execute(sql, parametros);
+    let listaEventos = [];
+    for (const registro of registros){
+        const Evento = new evento(
+            registro.id,
+            registro.nome_evento,
+            registro.nome_artista,
+            registro.ingresso_disp,
+            registro.valor_ingresso,
+            registro.cidade,
+            registro.estado,
+            registro.endereco_evento,
+            registro.data_evento
+        );
+        listaEventos.push(Evento);
+    }
+    return listaEventos;
+}};
